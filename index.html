@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kimi-Dev-72B</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 可链接自定义CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        /* 简单的内联CSS样式 */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #16191e; /* 淡灰色背景 */
+            color: #eaeef4; /* 深灰色文字 */
+        }
+
+        header {
+            background-color: #1c1c1c; /* 深灰背景 */
+            color: #eaeef4; /* 白色文字 */
+            padding: 30px 50px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .hero {
+            background: url('your-hero-image.jpg') no-repeat center center;
+            background-size: cover;
+            height: 700px;
+            color: #eaeef4;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .hero p {
+            max-width: 600px;  /* 设置最大宽度 */
+            margin: 0 auto;    /* 居中显示 */
+            color: #eaeef4;
+            text-align: left;  /* 左对齐 */
+        }
+
+        .hero c {
+            max-width: 600px;  /* 设置最大宽度 */
+            text-align: left;  /* 左对齐 */
+            color: #eaeef4;
+        }
+
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0;
+            color: #eaeef4; /* 白色标题 */
+        }
+
+        .hero h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            color: #eaeef4; /* 白色标题 */
+        }
+
+
+        .cta-button {
+            background-color: #3162dd; /* 蓝色按钮 */
+            color: #eaeef4;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3; /* 蓝色按钮悬停状态 */
+        }
+
+        .section {
+            padding: 20px 20px;
+            text-align: left;
+            background-color: #16191e;
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            color: #eaeef4; /* 深灰色标题 */
+        }
+
+        .section h3 {
+            font-size: 23px;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            color: #eaeef4; /* 深灰色标题 */
+        }
+
+
+        .section p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #eaeef4;
+            
+        }
+
+        .section ul {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #eaeef4;
+            
+        }
+
+        .section c {
+            font-size: 18px;
+            max-width: 800px;
+            text-align: center;
+            color: #eaeef4;
+        }
+
+        footer {
+            background-color: #16191e; /* 深灰背景 */
+            color: #e1e1e1;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        footer p {
+            margin: 0;
+            color: #e1e1e1;
+            font-size: 14px;
+        }
+        
+        .banner-image {
+            max-width: 8.3%;  /* 最大宽度为8.3% */
+            width: 100%;  /* 自适应容器宽度 */
+            height: auto;  /* 高度自动按比例缩放 */
+            display: block;
+            margin: 0 auto;  /* 居中显示 */
+            padding-top: 0.9%;  /* 图片顶部的间距，调整此值来增加或减少间距 */
+        }
+
+        .mlarge-image {
+            max-width: 650px;  /* 最大宽度为8.3% */
+            width: 100%;  /* 自适应容器宽度 */
+            height: auto;  /* 高度自动按比例缩放 */
+            display: block;
+            margin: 0 auto;  /* 居中显示 */
+            margin-top: 20px; 
+            margin-bottom: 5px 
+        }
+
+        .slarge-image {
+            max-width: 750px;  /* 最大宽度为8.3% */
+            width: 100%;  /* 自适应容器宽度 */
+            height: auto;  /* 高度自动按比例缩放 */
+            display: block;
+            margin: 0 auto;  /* 居中显示 */
+            margin-top: 20px; 
+            margin-bottom: 5px 
+        }
+
+        .llarge-image {
+            max-width: 800px;  /* 最大宽度为8.3% */
+            width: 100%;  /* 自适应容器宽度 */
+            height: auto;  /* 高度自动按比例缩放 */
+            display: block;
+            margin: 0 auto;  /* 居中显示 */
+            margin-top: 20px; 
+            margin-bottom: 5px 
+        }
+
+        .large-image {
+            max-width: 800px;  /* 最大宽度为8.3% */
+            width: 100%;  /* 自适应容器宽度 */
+            height: auto;  /* 高度自动按比例缩放 */
+            display: block;
+            margin: 0 auto;  /* 居中显示 */
+            margin-top: 20px; 
+            margin-bottom: 5px 
+        }
+
+
+        .date-time {
+            font-size: 18px;
+            color: #eaeef4;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+        max-width: 800px;
+        margin: 0 auto;  /* 居中显示 */
+
+        text-align: left;
+        background-color: #24272b;
+        font-size: 14px;
+        white-space: pre-wrap;
+        /* position: relative; */
+        }
+
+        .copy-button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 4px 8px;
+        font-size: 12px;
+        cursor: pointer;
+        background-color: #eaecef;
+        border: 1px solid #d1d5da;
+        border-radius: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .cta-button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <img src="./assets/moonshot_logo.png" alt="Banner Image" class="banner-image">
+    <!-- Hero Section (Banner) -->
+
+    <section class="hero">
+        <h2>Introducing Kimi-Dev:</h2>
+        <h3> A Strong and Open-source Coding LLM for Issue Resolution </h3>
+
+        
+        <div class="date-time">
+            <span>June 16, 2025 </span> &bull;
+            <span> 4 min read</span>
+        </div>
+        <img src="./assets/moon.jpg" alt="moon" style="width: 100%; max-width: 600px; height: auto; margin-top: 20px; margin-bottom: 20px">
+        <p>Today, we introduce Kimi-Dev-72B, our new open-source coding LLM for software engineering tasks. Kimi-Dev-72B achieves a new state-of-the-art on SWE-bench Verified among open-source models.  </p>
+        <!-- <a href="#learn-more" class="cta-button">Learn More</a> -->
+
+        
+
+    </section>
+
+    <section class="section">
+        <h2>Highlights</h2>
+        <p>1. Kimi-Dev-72B achieves 60.4% performance on SWE-bench Verified. It surpasses the runner-up, setting a new state-of-the-art result among open-source models.
+        </p>
+        <br>
+        <p>2. Kimi-Dev-72B is optimized via large-scale reinforcement learning. It autonomously patches real repositories in Docker and gains rewards only when the entire test suite passes. This ensures correct and robust solutions, aligning with real-world development standards.</p>
+        <br>
+        <p>3. Kimi-Dev-72B is available for download and deployment on Hugging Face and GitHub. We welcome developers and researchers to explore its capabilities and contribute to development.</p>
+        <br>
+        <br>
+        <img src="./assets/open_performance.png" alt="Large Image" class="llarge-image">
+        <p style="text-align: center;"><b>Performance of Open-source Models on SWE-bench Verified.</b></p>
+        <br>
+        <br>
+        <img src="./assets/close_performance.png" alt="Large Image" class="large-image">
+        <p style="text-align: center;"><b>Performance of Closed-source Models on SWE-bench Verified.</b></p>
+    </section>
+    
+    <section class="section">
+        <h2>Kimi-Dev-72B</h2>
+        <p>We introduce the design philosophy and technical details of Kimi-Dev-72B, including the duo of BugFixer and TestWriter, mid-training, reinforcement learning, and test-time self-play.</p>
+        <br>
+        <h3><b>Duo of BugFixer and TestWriter</b></h3>
+        <p>
+        A successful patch that fixes a bug should pass the unit tests that accurately reflect the bug. Meanwhile, a successful test that reproduces the bug should raise an assertion error, and pass when the correct bugfix patch is applied to the repository. This leads to the complementary roles of BugFixer and TestWriter, and a strong enough coding LLM should excel at both.
+        </p>
+        <br>
+        <p>
+        BugFixer and TestWriter share a similar routine: either of them first finds the right file to edit, then edits the correct code updates, whether rectifying fragile implementations or inserting unittest functions. Therefore, for both roles, Kimi-Dev-72B adopts the same minimal framework that contains only two stages: (1) <i>File Localization</i> and (2) <i>Code Edits</i>. The duo design of BugFixer and TestWriter lays the foundation of Kimi-Dev-72B.
+        </p>
+        <br>
+        <h3><b>Mid-training</b></h3>
+        <p> To enhance the Kimi-Dev-72B's prior as both a BugFixer and a TestWriter, we perform mid-training with ~150B tokens in high-quality and real-world data. With the Qwen 2.5-72B base model as a starting point, we gather millions of GitHub issues and PR commits as its mid-training dataset. The data recipe is carefully constructed to enable Kimi-Dev-72B to learn how human developers reason with GitHub issues, craft code fixes, and write unit tests. We also conducted strict data decontamination to exclude any repository from SWE-bench Verified. Mid-training sufficiently enhances the base model's knowledge of practical bug fixes and unit tests, making the model a better starting point for later RL training.</p>
+        <br>
+
+        <h3><b>Reinforcement Learning</b> </h3>
+        <p>With proper mid-training and SFT, Kimi-Dev-72B achieves strong performance in <i>File Localization</i>. Therefore, our RL stage focuses on improving its capability of <i>Code Edits</i>. We use a policy optimization method described in <a href="https://arxiv.org/abs/2501.12599" style="color: inherit;">Kimi k1.5</a>, which has demonstrated outstanding results in reasoning tasks. For SWE-bench Verified, we highlight the following 3 key designs: </p>
+        <p>
+        <ul>
+            <br>
+        <li><b><i>Outcome-based Reward Only.</i></b> We use only the final execution result from Docker (0 or 1) as the reward, without any format-based or process rewards during training. </li>
+            <br>
+        
+        <li><b><i>Efficient Prompt Set.</i></b> We filter out prompts where the model achieves a zero success rate under multi-sample evaluation, enabling more effective use of large batch sizes. We apply curriculum learning, where new prompts are introduced to gradually increase task difficulty. </li>
+            <br>
+        <li><b><i>Positive Example Reinforcement.</i></b> We include recent successful samples from previous iterations in the current batch in the final stage of training. This helps the model enhance successful patterns and improve performance.</li>
+        </ul>
+        </p>
+        <br>
+        <p>
+            Kimi-Dev-72B greatly benefits from training over a scalable number of issue resolution tasks, using the highly parallel, robust, and efficient internal agent infrastructure.
+        </p>
+        <br>
+
+
+
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px; max-width: 400px; text-align: center;">
+            <img src="./assets/RL_scale.jpeg" alt="RL-training Scaling" style="width: 100%; height: auto;">
+            <p><b>RL-training Scaling on SWE-bench Verified.</b></p>
+        </div>
+        <div style="flex: 1; min-width: 300px; max-width: 400px; text-align: center;">
+            <img src="./assets/test_time_scale.jpeg" alt="Test-time Scaling" style="width: 100%; height: auto;">
+            <p><b>Test-time Scaling on SWE-bench Verified.</b></p>
+        </div>
+        </div>
+        <br>
+        <br>
+
+        <h3><b>Test-time Self-Play.</b></h3>
+
+        <p> After RL, Kimi-Dev-72B masters the roles of both a BugFixer and a TestWriter. During test time, it adopts a self-play mechanism to coordinate its bug-fixing and test-writing abilities.</p>
+
+        <img src="./assets/self_play.png" alt="small Image" class="mlarge-image">
+        <p style="text-align: center;"><b>Test-time Self-Play between BugFixer and TestWriter.</b></p>
+        <br>
+        
+        <p> With up to 40 patch candidates and up to 40 test candidates generated per issue (following the standard <a href="https://github.com/OpenAutoCoder/Agentless" style="color: inherit;">Agentless</a> setting), a scaling effect is observed for test-time self-play.</p>
+
+    </section>
+
+
+
+    <section class="section">
+        <h2>Open Access</h2>
+        <p>
+            Kimi-Dev-72B is released for the community under the permissive Apache 2.0 license. Key resources include: 
+            <a href="https://huggingface.co/moonshotai/Kimi-Dev-72B" style="color: inherit;">Model Weight</a>, 
+            <a href="xxx" style="color: inherit;">Source Code</a>, and Technical Report (coming soon).
+            </p>
+        <br>
+        <p>As an open project, its advancement benefits from community involvement. We hope that developers and organizations will explore, integrate, and expand the model's applications. </p>
+
+
+
+
+    </section>
+
+
+    <section class="section">
+        <h2>What's Next</h2>
+        <p>We are actively researching and developing ways to extend Kimi-Dev-72B's capabilities and explore more complex software engineering tasks. Future iterations will focus on deeper integrations with popular Integrated Development Environments (IDEs), version control systems, and CI/CD pipelines, making Kimi-Dev-72B even more seamless within a developer's workflow. Constant effort would be paid for Kimi-Dev-72B's endless improvement, careful red-teaming, and releasing stronger models to the community.</p>
+    </section>
+
+
+    <footer>
+        <p>&copy; 2025 Moonshot. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+
+
