@@ -1,0 +1,138 @@
+# ============================================================================
+# Micro-RL GRPO Experiment Configuration
+# GigaChat-Lightning Base (10B-A1.8B) on single B200 GPU
+# ============================================================================
+
+experiment:
+  name: "micro_rl_grpo_gigachat"
+  description: "GRPO training on SWE-bench subset with GigaChat-Lightning"
+  seed: 42
+  output_dir: "./checkpoints"
+  logging_dir: "./logs"
+
+# Model Configuration
+model:
+  name: "ai-sage/GigaChat3-10B-A1.8B-base"
+  local_path: "./models/gigachat-lightning-base"
+  torch_dtype: "bfloat16"
+  trust_remote_code: true
+  use_flash_attention_2: true
+
+  # Context settings
+  max_seq_length: 49152  # 48K tokens
+  max_new_tokens: 16384  # 16K for generation
+
+# GRPO Training Configuration
+grpo:
+  # Core GRPO parameters
+  num_generations: 8         # Rollouts per prompt (G in GRPO)
+  temperature: 1.0           # Sampling temperature
+  top_p: 0.95
+  kl_coef: 0.05              # KL divergence coefficient
+  clip_range: 0.2            # PPO-style clipping
+
+  # Reward configuration
+  reward_baseline: "mean"    # "mean" or "min"
+  reward_scale: 1.0
+
+  # Training
+  batch_size: 2              # Prompts per batch
+  gradient_accumulation_steps: 8
+  effective_batch_size: 16
+
+  learning_rate: 1.0e-6
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  lr_scheduler_type: "cosine"
+
+  num_train_epochs: 3
+  max_steps: 1000
+
+  # Optimization
+  gradient_checkpointing: true
+  fp16: false
+  bf16: true
+
+# Data Configuration
+data:
+  dataset: "princeton-nlp/SWE-bench_Verified"
+  subset_size: 100           # Number of problems for micro experiment
+  train_split: 0.8
+  eval_split: 0.2
+
+  # Filtering
+  max_file_size: 50000       # Max file size in characters
+  exclude_repos: []          # Repos to exclude
+
+  # Rollout settings
+  rollouts_per_problem: 8
+  max_retry: 3
+
+# Two-Stage Agentless Framework
+agentless:
+  # Stage 1: File Localization
+  localization:
+    max_files: 5             # Max files to identify
+    temperature: 0.0         # Deterministic for first pass
+
+  # Stage 2: Code Edit
+  code_edit:
+    format: "search_replace"  # SEARCH/REPLACE format
+    temperature: 1.0          # Stochastic for diversity
+    max_edits: 10
+
+# Docker Sandbox Configuration
+sandbox:
+  image: "swebench-sandbox:latest"
+  max_concurrent: 50
+  timeout: 300               # 5 minutes per test
+  memory_limit: "4g"
+  cpu_limit: 2.0
+
+  # Test execution
+  test_timeout: 180          # 3 minutes for tests
+
+# Evaluation Configuration
+evaluation:
+  eval_steps: 100            # Evaluate every N steps
+  save_steps: 200            # Save checkpoint every N steps
+  eval_problems: 20          # Problems for intermediate eval
+
+  # Metrics
+  metrics:
+    - "f2p"                  # Fail-to-Pass
+    - "p2p"                  # Pass-to-Pass
+    - "resolve_rate"         # Full resolution
+    - "file_localization_acc"
+    - "patch_validity"
+
+# Logging Configuration
+logging:
+  use_wandb: true
+  wandb_project: "micro-rl-grpo"
+  wandb_entity: null         # Set your entity
+
+  log_level: "INFO"
+  log_every_n_steps: 10
+
+  # What to log
+  log_model_outputs: true
+  log_rewards: true
+  log_gradients: false       # Expensive, disable by default
+
+  # Checkpointing
+  save_total_limit: 3
+  save_best_only: false
+
+# Hardware Configuration
+hardware:
+  device: "cuda"
+  gpu_memory_utilization: 0.95
+
+  # For multi-GPU (if available)
+  tensor_parallel_size: 1
+  data_parallel_size: 1
+
+  # Memory optimization
+  use_cpu_offload: false
+  use_gradient_checkpointing: true
